@@ -112,11 +112,20 @@ h4,
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: calc(var(--safe-top) + 16px) 12px calc(var(--navbar-height) + var(--safe-bottom) + 30px) 12px;
+  padding: calc(var(--safe-top) + 16px) 12px calc(var(--navbar-height) + var(--safe-bottom) + 140px) 12px;
   display: flex;
   flex-direction: column;
-  /* gap: 4px; */
+  -webkit-overflow-scrolling: touch;
   animation: fadeIn 0.3s ease-out;
+}
+
+/* Explicit bottom spacer block that WebKit/Safari CANNOT collapse or ignore inside flex column scroll containers */
+.view-container::after {
+  content: "";
+  display: block;
+  min-height: calc(var(--navbar-height) + var(--safe-bottom) + 100px);
+  width: 100%;
+  flex-shrink: 0;
 }
 
 @keyframes fadeIn {

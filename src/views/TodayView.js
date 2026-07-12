@@ -117,7 +117,7 @@ export function renderTodayView() {
             `).join('')}
           </div>
 
-          <button class="btn btn-primary btn-full" id="start-btn" style="padding: 16px; font-size: 16px; margin-top: 8px;">
+          <button class="btn btn-primary btn-full" id="start-btn" style="padding: 16px; font-size: 16px; margin-top: 16px; margin-bottom: 24px;">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
             </svg>
@@ -200,7 +200,7 @@ export function renderTodayView() {
       <div id="active-exercises-list" style="display: flex; flex-direction: column; gap: 16px;"></div>
 
       <!-- Footer Action Buttons -->
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px; margin-bottom: 24px;">
         <button class="btn btn-primary btn-full" id="finish-workout-btn" style="padding: 16px; font-size: 16px; background: var(--accent-cyan); color: #0A0C0F; font-weight: 800;">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
