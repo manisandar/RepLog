@@ -172,7 +172,7 @@ export function renderTodayView() {
 
     container.innerHTML = `
       <!-- Active Workout Header Bar -->
-      <div class="card" style="background: linear-gradient(145deg, #161920 0%, #1D2330 100%); border: 1px solid var(--border-glow); padding: 16px;">
+      <div class="card active-workout-header" style="position: sticky; top: -16px; z-index: 50; margin-top: -16px; background: linear-gradient(145deg, rgba(22, 25, 32, 0.96) 0%, rgba(29, 35, 48, 0.96) 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glow); padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px;">

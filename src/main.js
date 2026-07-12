@@ -21,9 +21,12 @@ function renderApp() {
   const app = document.getElementById('app');
   if (!app) return;
 
-  app.innerHTML = '';
-
   const { activeTab } = store.state;
+  const oldContainer = app.querySelector('.view-container');
+  const oldTab = app.dataset.currentTab;
+  const savedScrollTop = oldContainer ? oldContainer.scrollTop : 0;
+
+  app.innerHTML = '';
 
   // Render view based on active tab
   let viewEl;
@@ -45,8 +48,21 @@ function renderApp() {
       viewEl = renderTodayView();
   }
 
+  // If staying on the same tab during a state update (e.g., checking off a set, stepping weight/reps),
+  // disable the initial fade-in animation to avoid visual flickering
+  if (oldTab === activeTab && oldContainer) {
+    viewEl.style.animation = 'none';
+  }
+
   app.appendChild(viewEl);
   app.appendChild(renderNavbar(activeTab));
+
+  // Restore exact scroll position when re-rendering the current tab
+  if (oldTab === activeTab && oldContainer && savedScrollTop > 0) {
+    viewEl.scrollTop = savedScrollTop;
+  }
+
+  app.dataset.currentTab = activeTab;
 }
 
 // Subscribe to store updates to re-render when state changes
