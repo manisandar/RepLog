@@ -148,7 +148,6 @@ export function renderProgramPlanner() {
       <div class="program-header-row" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;" title="Click to expand / collapse program exercises">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
           <!-- Program Reorder Touch & Hold Handle -->
-          <div class="reorder-handle routine-reorder-handle" title="Touch & hold to reorder programs">⋮⋮</div>
           <!-- Collapse Toggle Chevron -->
           <button class="stepper-btn toggle-collapse-btn" type="button" style="width: 32px; height: 32px; flex-shrink: 0; font-size: 14px; background: var(--bg-surface-3); color: var(--accent-cyan); border: 1px solid var(--border-subtle); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" title="Expand / Collapse Program">
             <svg class="chevron-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transform: ${isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'}; transition: transform 0.2s ease;">
