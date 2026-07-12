@@ -4,22 +4,22 @@
 export const DEFAULT_ROUTINES = [
   {
     id: 'push-day',
-    name: 'Push Day (Chest, Shoulders & Triceps)',
+    name: 'Push Day',
     exercises: [
       {
         id: 'ex-bench-press',
-        name: 'Barbell Bench Press',
+        name: 'Incline Barbell Bench Press',
         targetSets: 4,
-        targetReps: 8,
-        targetWeight: 80,
+        targetReps: 10,
+        targetWeight: 40,
         restTimeSec: 90
       },
       {
         id: 'ex-ohp',
-        name: 'Overhead Shoulder Press',
-        targetSets: 3,
+        name: 'Machine Chest Press',
+        targetSets: 4,
         targetReps: 10,
-        targetWeight: 50,
+        targetWeight: 55,
         restTimeSec: 90
       },
       {
@@ -42,7 +42,7 @@ export const DEFAULT_ROUTINES = [
   },
   {
     id: 'pull-day',
-    name: 'Pull Day (Back & Biceps)',
+    name: 'Pull Day',
     exercises: [
       {
         id: 'ex-lat-pulldown',
@@ -80,7 +80,7 @@ export const DEFAULT_ROUTINES = [
   },
   {
     id: 'leg-day',
-    name: 'Leg Day (Quads, Hamstrings & Calves)',
+    name: 'Leg Day',
     exercises: [
       {
         id: 'ex-squat',
