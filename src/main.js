@@ -2,7 +2,7 @@ import './index.css';
 import { store } from './state/store.js';
 import { renderNavbar } from './components/Navbar.js';
 import { renderTodayView } from './views/TodayView.js';
-import { renderRoutinePlanner } from './views/RoutinePlanner.js';
+import { renderProgramPlanner, renderRoutinePlanner } from './views/RoutinePlanner.js';
 import { renderHistoryView } from './views/HistoryView.js';
 import { renderSettingsView } from './views/SettingsView.js';
 
@@ -31,8 +31,9 @@ function renderApp() {
     case 'today':
       viewEl = renderTodayView();
       break;
+    case 'programs':
     case 'routines':
-      viewEl = renderRoutinePlanner();
+      viewEl = renderProgramPlanner();
       break;
     case 'history':
       viewEl = renderHistoryView();

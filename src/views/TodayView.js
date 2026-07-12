@@ -20,12 +20,12 @@ export function renderTodayView() {
         
       </div>
 
-      <p style="color: var(--text-secondary); font-size: 14px;">Select your planned routine for today to begin logging sets, weights, and rest times.</p>
+      <p style="color: var(--text-secondary); font-size: 14px;">Select your planned program for today to begin logging sets, weights, and rest times.</p>
 
-      <!-- Routine Selection Pills -->
+      <!-- Program Selection Pills -->
       <div class="pill-selector" id="routine-pills"></div>
 
-      <!-- Preview Selected Routine Card -->
+      <!-- Preview Selected Program Card -->
       <div id="selected-routine-preview" style="display: flex; flex-direction: column; gap: 16px;"></div>
     `;
 
@@ -38,12 +38,12 @@ export function renderTodayView() {
           <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
           </svg>
-          <p>No routines created yet.</p>
-          <button class="btn btn-primary" id="goto-routines-btn">Go to Routines Planner</button>
+          <p>No programs created yet.</p>
+          <button class="btn btn-primary" id="goto-routines-btn">Go to Programs Planner</button>
         </div>
       `;
       const btn = previewContainer.querySelector('#goto-routines-btn');
-      if (btn) btn.addEventListener('click', () => store.setActiveTab('routines'));
+      if (btn) btn.addEventListener('click', () => store.setActiveTab('programs'));
       return container;
     }
 
@@ -71,7 +71,7 @@ export function renderTodayView() {
           <div class="card card-glass" style="border-color: rgba(255, 183, 3, 0.4);">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
               <div>
-                <span class="exercise-meta-badge" style="background: rgba(255, 183, 3, 0.15); color: #FFB703;">0 Exercises • Empty Routine</span>
+                <span class="exercise-meta-badge" style="background: rgba(255, 183, 3, 0.15); color: #FFB703;">0 Exercises • Empty Program</span>
                 <h2 style="font-size: 22px; margin-top: 8px;">${r.name}</h2>
               </div>
             </div>
@@ -91,7 +91,7 @@ export function renderTodayView() {
         `;
 
         previewContainer.querySelector('#redirect-add-ex-btn').addEventListener('click', () => {
-          store.setActiveTab('routines');
+          store.setActiveTab('programs');
           setTimeout(() => {
             modalManager.showExerciseModal(r.id);
           }, 80);
@@ -128,7 +128,7 @@ export function renderTodayView() {
 
       previewContainer.querySelector('#start-btn').addEventListener('click', () => {
         if (r.exercises.length === 0) {
-          store.setActiveTab('routines');
+          store.setActiveTab('programs');
           setTimeout(() => {
             modalManager.showExerciseModal(r.id);
           }, 80);

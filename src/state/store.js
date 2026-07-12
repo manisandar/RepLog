@@ -2,6 +2,7 @@ import { DEFAULT_ROUTINES, DEFAULT_SETTINGS } from './defaultData.js';
 import { modalManager } from '../components/ExerciseModal.js';
 
 const STORAGE_KEYS = {
+  PROGRAMS: 'replog_programs_v1',
   ROUTINES: 'replog_routines_v1',
   HISTORY: 'replog_history_v1',
   SETTINGS: 'replog_settings_v1',
@@ -13,26 +14,30 @@ class RepLogStore {
     this.listeners = new Set();
     this.state = {
       routines: [],
+      programs: [],
       history: [],
       settings: { ...DEFAULT_SETTINGS },
       activeWorkout: null,
-      activeTab: 'today' // 'today' | 'routines' | 'history' | 'settings'
+      activeTab: 'today' // 'today' | 'programs' | 'history' | 'settings'
     };
     this.init();
   }
 
   init() {
-    // Load routines
-    const savedRoutines = localStorage.getItem(STORAGE_KEYS.ROUTINES);
-    if (savedRoutines) {
+    // Load programs or fallback routines
+    const savedPrograms = localStorage.getItem(STORAGE_KEYS.PROGRAMS) || localStorage.getItem(STORAGE_KEYS.ROUTINES);
+    if (savedPrograms) {
       try {
-        this.state.routines = JSON.parse(savedRoutines);
+        this.state.routines = JSON.parse(savedPrograms);
+        this.state.programs = this.state.routines;
       } catch (e) {
-        console.error('Error parsing routines from storage, using defaults:', e);
+        console.error('Error parsing programs from storage, using defaults:', e);
         this.state.routines = JSON.parse(JSON.stringify(DEFAULT_ROUTINES));
+        this.state.programs = this.state.routines;
       }
     } else {
       this.state.routines = JSON.parse(JSON.stringify(DEFAULT_ROUTINES));
+      this.state.programs = this.state.routines;
       this.saveRoutines();
     }
 
@@ -73,20 +78,29 @@ class RepLogStore {
   }
 
   notify() {
-    this.listeners.forEach((listener) => listener(this.state));
+    this.listeners.forEach(listener => listener(this.state));
   }
 
   setActiveTab(tabName) {
+    if (tabName === 'routines') tabName = 'programs';
     if (this.state.activeTab !== tabName) {
       this.state.activeTab = tabName;
       this.notify();
     }
   }
 
-  // ==================== ROUTINES MANAGEMENT ====================
+  // ==================== PROGRAMS & ROUTINES MANAGEMENT ====================
   saveRoutines() {
+    this.state.programs = this.state.routines;
+    localStorage.setItem(STORAGE_KEYS.PROGRAMS, JSON.stringify(this.state.routines));
     localStorage.setItem(STORAGE_KEYS.ROUTINES, JSON.stringify(this.state.routines));
   }
+
+  savePrograms() { this.saveRoutines(); }
+  getPrograms() { return this.state.routines; }
+  addProgram(program) { this.addRoutine(program); }
+  updateProgram(updatedProgram) { this.updateRoutine(updatedProgram); }
+  deleteProgram(programId) { this.deleteRoutine(programId); }
 
   getRoutines() {
     return this.state.routines;
@@ -120,7 +134,7 @@ class RepLogStore {
 
     if (!routine.exercises || routine.exercises.length === 0) {
       alert(`Cannot start workout: "${routine.name}" has no exercises yet. Please add exercises first!`);
-      this.setActiveTab('routines');
+      this.setActiveTab('programs');
       setTimeout(() => {
         modalManager.showExerciseModal(routine.id);
       }, 80);
@@ -312,6 +326,7 @@ class RepLogStore {
 
   resetToDefaultData() {
     this.state.routines = JSON.parse(JSON.stringify(DEFAULT_ROUTINES));
+    this.state.programs = this.state.routines;
     this.state.settings = { ...DEFAULT_SETTINGS };
     this.saveRoutines();
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(this.state.settings));

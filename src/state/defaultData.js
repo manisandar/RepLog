@@ -1,7 +1,7 @@
 /**
-  * Default starter routines and exercises for RepLog
+  * Default starter programs and exercises for RepLog
   */
-export const DEFAULT_ROUTINES = [
+export const DEFAULT_PROGRAMS = [
   {
     id: 'push-day',
     name: 'Push Day',
@@ -117,6 +117,8 @@ export const DEFAULT_ROUTINES = [
     ]
   }
 ];
+
+export const DEFAULT_ROUTINES = DEFAULT_PROGRAMS;
 
 export const DEFAULT_SETTINGS = {
   unit: 'kg', // or 'lbs'

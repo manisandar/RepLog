@@ -75,13 +75,12 @@ export function renderSettingsView() {
 
     <!-- Reset to Defaults Card -->
     <div class="card" style="display: flex; flex-direction: column; gap: 14px; border-color: rgba(255, 51, 102, 0.25);">
-      
-    <button class="btn" id="reset-defaults-btn" style="background: rgba(255, 51, 102, 0.15); color: var(--accent-coral); border: 1px solid var(--accent-coral); padding: 12px; font-size: 14px;">
-    ⚠️ Reset to Default Routines
-    </button>
-    <p style="font-size: 13px; color: var(--text-secondary);">
-      Resetting will restore the default starter routines (Push, Pull, Legs) and clear custom modifications.
-    </p>
+      <button class="btn" id="reset-defaults-btn" style="background: rgba(255, 51, 102, 0.15); color: var(--accent-coral); border: 1px solid var(--accent-coral); padding: 12px; font-size: 14px;">
+        ⚠️ Reset to Default Programs
+      </button>
+      <p style="font-size: 13px; color: var(--text-secondary);">
+        Resetting will restore the default starter programs (Push, Pull, Legs) and clear custom modifications.
+      </p>
     </div>
 
     <!-- PWA About -->
@@ -138,7 +137,7 @@ export function renderSettingsView() {
 
   // Reset defaults
   container.querySelector('#reset-defaults-btn').addEventListener('click', () => {
-    if (confirm('Are you sure you want to reset all routines to the original Push / Pull / Legs starter templates?')) {
+    if (confirm('Are you sure you want to reset all programs to the original Push / Pull / Legs starter templates?')) {
       store.resetToDefaultData();
     }
   });

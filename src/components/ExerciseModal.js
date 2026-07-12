@@ -34,17 +34,17 @@ export class ModalManager {
     this.overlayEl.classList.remove('open');
   }
 
-  // ==================== ROUTINE MODAL ====================
+  // ==================== PROGRAM MODAL ====================
   showAddRoutineModal(onSave) {
     const html = `
-      <h3 style="font-size: 20px; margin-bottom: 16px;">Create New Routine Day</h3>
+      <h3 style="font-size: 20px; margin-bottom: 16px;">Create New Program</h3>
       <div class="form-group">
-        <label class="form-label">Routine Name (e.g., Push Day, Cardio & Abs)</label>
+        <label class="form-label">Program Name (e.g., Push Day, Cardio & Abs)</label>
         <input type="text" id="modal-routine-name" class="form-input" placeholder="e.g. Upper Body Power" autocomplete="off" />
       </div>
       <div style="display: flex; gap: 12px; margin-top: 24px;">
         <button class="btn btn-secondary" style="flex: 1;" id="modal-cancel-btn">Cancel</button>
-        <button class="btn btn-primary" style="flex: 1;" id="modal-save-routine-btn">Create Routine</button>
+        <button class="btn btn-primary" style="flex: 1;" id="modal-save-routine-btn">Create Program</button>
       </div>
     `;
 
@@ -58,7 +58,7 @@ export class ModalManager {
       const name = inputEl.value.trim();
       if (!name) return;
       const newRoutine = {
-        id: 'routine_' + Date.now(),
+        id: 'program_' + Date.now(),
         name,
         exercises: []
       };

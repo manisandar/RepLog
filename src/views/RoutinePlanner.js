@@ -1,48 +1,59 @@
 import { modalManager } from '../components/ExerciseModal.js';
 import { store } from '../state/store.js';
 
-export function renderRoutinePlanner() {
+// Track expanded programs during the session so collapsed by default at start
+const expandedProgramIds = new Set();
+
+export function renderProgramPlanner() {
   const container = document.createElement('div');
   container.className = 'view-container';
 
   const { routines, settings } = store.state;
+  const programs = routines;
   const globalUnit = settings.unit || 'kg';
 
   container.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
       <div>
         <span style="font-size: 12px; font-weight: 700; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 0.08em;">Plan & Templates</span>
-        <h1 style="font-size: 28px; color: var(--text-primary); margin-top: 2px;">Routines</h1>
+        <h1 style="font-size: 28px; color: var(--text-primary); margin-top: 2px;">Programs</h1>
       </div>
       <button class="btn btn-primary" id="create-routine-btn" style="padding: 10px 16px; font-size: 14px;">
-        + New Routine
+        + New Program
       </button>
     </div>
 
     <p style="color: var(--text-secondary); font-size: 14px;">
-      Manage your workout days and exercises.
+      Manage your workout programs and exercises.
     </p>
 
     <div id="routines-list" style="display: flex; flex-direction: column; gap: 20px; margin-top: 8px;"></div>
   `;
 
-  // Create routine button click
+  // Create program button click
   container.querySelector('#create-routine-btn').addEventListener('click', () => {
-    modalManager.showAddRoutineModal();
+    modalManager.showAddRoutineModal((newProgram) => {
+      if (newProgram && newProgram.id) {
+        expandedProgramIds.add(newProgram.id);
+      }
+    });
   });
 
   const listContainer = container.querySelector('#routines-list');
 
-  if (routines.length === 0) {
+  if (programs.length === 0) {
     listContainer.innerHTML = `
       <div class="empty-state card">
-        
-        <p>You haven't created any routines yet.</p>
-        <button class="btn btn-secondary" id="empty-add-btn">+ Create First Routine</button>
+        <p>You haven't created any programs yet.</p>
+        <button class="btn btn-secondary" id="empty-add-btn">+ Create First Program</button>
       </div>
     `;
     const emptyBtn = listContainer.querySelector('#empty-add-btn');
-    if (emptyBtn) emptyBtn.addEventListener('click', () => modalManager.showAddRoutineModal());
+    if (emptyBtn) emptyBtn.addEventListener('click', () => modalManager.showAddRoutineModal((newProgram) => {
+      if (newProgram && newProgram.id) {
+        expandedProgramIds.add(newProgram.id);
+      }
+    }));
     return container;
   }
 
@@ -124,6 +135,7 @@ export function renderRoutinePlanner() {
   };
 
   routines.forEach(r => {
+    const isExpanded = expandedProgramIds.has(r.id);
     const rEl = document.createElement('div');
     rEl.className = 'card';
     rEl.dataset.itemId = r.id;
@@ -133,27 +145,33 @@ export function renderRoutinePlanner() {
     rEl.style.borderLeft = '4px solid var(--accent-cyan)';
 
     rEl.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="program-header-row" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;" title="Click to expand / collapse program exercises">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
-          <!-- Routine Reorder Touch & Hold Handle -->
-          <div class="reorder-handle routine-reorder-handle" title="Touch & hold to reorder routines">⋮⋮</div>
+          <!-- Program Reorder Touch & Hold Handle -->
+          <div class="reorder-handle routine-reorder-handle" title="Touch & hold to reorder programs">⋮⋮</div>
+          <!-- Collapse Toggle Chevron -->
+          <button class="stepper-btn toggle-collapse-btn" type="button" style="width: 32px; height: 32px; flex-shrink: 0; font-size: 14px; background: var(--bg-surface-3); color: var(--accent-cyan); border: 1px solid var(--border-subtle); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" title="Expand / Collapse Program">
+            <svg class="chevron-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transform: ${isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'}; transition: transform 0.2s ease;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
           <div style="flex: 1; max-width: 260px;">
-            <input type="text" class="routine-name-input" value="${r.name}" title="Click or select to rename routine" spellcheck="false" autocomplete="off" />
+            <input type="text" class="routine-name-input" value="${r.name}" title="Click or select to rename program" spellcheck="false" autocomplete="off" />
             <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; display: block; margin-top: 2px;">${r.exercises.length} Exercises Planned</span>
           </div>
         </div>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 8px; align-items: center;">
           <button class="btn btn-secondary add-ex-btn" type="button" style="padding: 8px 12px; font-size: 13px; border-color: var(--accent-cyan); color: var(--accent-cyan);">
             + Add Exercise
           </button>
-          <button class="stepper-btn delete-routine-btn" type="button" style="color: var(--accent-coral); background: rgba(255, 51, 102, 0.1);" title="Delete Routine Day">
+          <button class="stepper-btn delete-routine-btn" type="button" style="color: var(--accent-coral); background: rgba(255, 51, 102, 0.1);" title="Delete Program Day">
             ✕
           </button>
         </div>
       </div>
 
-      <!-- Exercise List for this Routine -->
-      <div class="routine-exercises-sublist" style="display: flex; flex-direction: column; gap: 8px;">
+      <!-- Exercise List for this Program -->
+      <div class="routine-exercises-sublist" style="display: ${isExpanded ? 'flex' : 'none'}; flex-direction: column; gap: 8px; margin-top: 4px;">
         ${r.exercises.length === 0 ? `
           <div style="text-align: center; padding: 20px; background: var(--bg-surface-2); border-radius: 10px; color: var(--text-muted); font-size: 13px;">
             No exercises added yet. Click "+ Add Exercise" above!
@@ -187,6 +205,29 @@ export function renderRoutinePlanner() {
       </div>
     `;
 
+    // Toggle collapse/expand on header click
+    const headerRow = rEl.querySelector('.program-header-row');
+    const sublistEl = rEl.querySelector('.routine-exercises-sublist');
+    const chevronIcon = rEl.querySelector('.chevron-icon');
+
+    const toggleCollapse = (e) => {
+      // Ignore click if targeting name input, buttons, or drag handle
+      if (e.target.closest('.routine-name-input') || e.target.closest('.reorder-handle') || e.target.closest('.add-ex-btn') || e.target.closest('.delete-routine-btn')) {
+        return;
+      }
+      if (expandedProgramIds.has(r.id)) {
+        expandedProgramIds.delete(r.id);
+        sublistEl.style.display = 'none';
+        if (chevronIcon) chevronIcon.style.transform = 'rotate(-90deg)';
+      } else {
+        expandedProgramIds.add(r.id);
+        sublistEl.style.display = 'flex';
+        if (chevronIcon) chevronIcon.style.transform = 'rotate(0deg)';
+      }
+    };
+
+    headerRow.addEventListener('click', toggleCollapse);
+
     // Inline Routine Title Edit Events
     const nameInput = rEl.querySelector('.routine-name-input');
     if (nameInput) {
@@ -210,6 +251,7 @@ export function renderRoutinePlanner() {
     // Attach routine touch and hold reorder
     const routineHandle = rEl.querySelector('.routine-reorder-handle');
     if (routineHandle) {
+      routineHandle.addEventListener('click', (e) => e.stopPropagation());
       attachTouchAndHoldDrag(
         rEl,
         routineHandle,
@@ -221,13 +263,17 @@ export function renderRoutinePlanner() {
     }
 
     // Add exercise button
-    rEl.querySelector('.add-ex-btn').addEventListener('click', () => {
+    rEl.querySelector('.add-ex-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandedProgramIds.add(r.id);
       modalManager.showExerciseModal(r.id);
     });
 
     // Delete routine button
-    rEl.querySelector('.delete-routine-btn').addEventListener('click', () => {
-      if (confirm(`Delete routine "${r.name}"?`)) {
+    rEl.querySelector('.delete-routine-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (confirm(`Delete program "${r.name}"?`)) {
+        expandedProgramIds.delete(r.id);
         store.deleteRoutine(r.id);
       }
     });
@@ -269,3 +315,5 @@ export function renderRoutinePlanner() {
 
   return container;
 }
+
+export const renderRoutinePlanner = renderProgramPlanner;
