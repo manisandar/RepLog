@@ -1,5 +1,9 @@
 # RepLog -- Gym Routine Tracker
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Launch%20RepLog-00F5D4?style=for-the-badge)](https://manisandar.github.io/RepLog/)
+
+**🌐 [Launch Live Application (GitHub Pages)](https://manisandar.github.io/RepLog/)**
+
 RepLog is an advanced, offline-first Progressive Web Application (PWA) engineered specifically for strength athletes, lifters, and fitness enthusiasts who require precision tracking of their resistance training programs. Built with vanilla HTML5, modern CSS3, and native JavaScript (ES Modules) powered by Vite, RepLog delivers a responsive, zero-latency mobile experience without the bloat or overhead of heavyweight front-end frameworks.
 
 ---
